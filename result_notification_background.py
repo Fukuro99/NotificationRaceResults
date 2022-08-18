@@ -16,20 +16,31 @@ import format_result_nar_race
 
 console = Console()
 pretty.install()
+"""
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
+)
+log = logging.getLogger("rich")
+"""
+#chomedriverのパスを指定
+executable_path="./chromedriver.exe"
+#レース結果通知先のwebsocketサーバーのアドレスを指定
+ws_result_endpoint = "ws://localhost:8000/ws/result"
 
 def on_message(wsapp, message):
     print(message)
 
 def main():
-    executable_path="./chromedriver.exe"
-    options = Options()
-    options.add_argument('--headless')
-    driver = webdriver.Chrome(executable_path=executable_path, options=options)
-
     result_raceID_list = []
     done_raceID_list = []
     result_raceID_dict = {}
+    options = Options()
+    options.add_argument('--headless')
     try:
+        driver = webdriver.Chrome(executable_path=executable_path, options=options)
         while True:
             #data = await ws.receive_text()
             driver.get('https://www.netkeiba.com/')
@@ -73,15 +84,15 @@ def main():
                     #結果から確定情報を整形してWSで送信する
                     if result_raceID_dict[race_id]:
                         result_url = f"https://nar.netkeiba.com/race/result.html?race_id={race_id}"
-                        race_result = format_result_nar_race.get_race_result(result_url)
+                        race_result = format_result_nar_race.format_result_race(result_url)
                     else:
                         result_url = f"https://race.netkeiba.com/race/result.html?race_id={race_id}"
-                        race_result = format_result_race.get_race_result(result_url)
+                        race_result = format_result_race.format_result_race(result_url)
                     console.log(result_url)
                     console.log(race_result)
                     
                     ws = websocket.WebSocket()
-                    ws.connect("ws://localhost:8000/ws/result")
+                    ws.connect(ws_result_endpoint)
                     ws.send(race_result)
                     ws.close()
                     result_raceID_list.remove(race_id)

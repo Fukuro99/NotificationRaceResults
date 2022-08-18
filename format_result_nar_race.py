@@ -83,14 +83,15 @@ def format_result_race(url:str)->str:
     format_payout_text = format_payout_text.replace("'", "")
     format_info_text = f"レース場:{info[0]},レース:{info[1]},レース名:{info[2]},出走:{info[3]},距離:{info[4]},天気:{info[5]},馬場:{info[6]}"
     format_text = f"{format_info_text},{format_payout_text}"
-    console.log(format_text)
+    #console.log(format_text)
     return format_text
 
 def get_race_result(url):
     try:
         return format_result_race(url)
-    except:
+    except Exception as e:
+        console.log("LOG_DEBUG", '{}:{}'.format(type(e),e))
         return "error"
 
 if __name__ == "__main__":
-    format_result_race("https://nar.netkeiba.com/race/result.html?race_id=202242080912")
+    format_result_race("https://nar.netkeiba.com/race/result.html?race_id=202250081010")
