@@ -79,7 +79,7 @@ def format_result_race(url:str)->str:
     sanrentan_payout = sanrentan.find_all(class_ = "Payout")[0].text.split("円")
     sanrentan_payout = [i.replace(",","") for i in sanrentan_payout if i != ""]
     
-    format_payout_text = f"払い戻し:単勝:{tansho_result},{tansho_payout}],複勝:{fukusho_result},{fukusho_payout},枠連:{wakuren_result},{wakuren_payout},馬連:{umaren_result},{umaren_payout},ワイド:{wide_result},{wide_payout},馬単:{umatan_result},{umatan_payout},三連複:{sanrenfuku_result},{sanrenfuku_payout},三連単:{sanrentan_result},{sanrentan_payout}"
+    format_payout_text = f"払い戻し:単勝:{tansho_result},{tansho_payout},複勝:{fukusho_result},{fukusho_payout},枠連:{wakuren_result},{wakuren_payout},馬連:{umaren_result},{umaren_payout},ワイド:{wide_result},{wide_payout},馬単:{umatan_result},{umatan_payout},三連複:{sanrenfuku_result},{sanrenfuku_payout},三連単:{sanrentan_result},{sanrentan_payout}"
     format_payout_text = format_payout_text.replace("'", "")
     format_info_text = f"レース場:{info[0]},レース:{info[1]},レース名:{info[2]},出走:{info[3]},距離:{info[4]},天気:{info[5]},馬場:{info[6]}"
     format_text = f"{format_info_text},{format_payout_text}"
