@@ -46,9 +46,15 @@ def main():
             driver.get('https://www.netkeiba.com/')
             html = driver.page_source
             soup = bs4.BeautifulSoup(html, 'html.parser')
+            result_state = soup.select_one('.Race_State').text
+            print(result_state)
             for data in soup.find_all(class_ = "ResultFlash01 flash_item"):
                 try:
                     is_nar = False
+                    #pan class="Race_State"の値が"確定"の場合のみ処理を行う
+                    race_state = soup.select_one('.Race_State').text
+                    if race_state != "確定":
+                        continue
                     #aタグの中にあるhref属性を取得
                     href = data.find('a').get('href')
                     #地方競馬の場合は別のリンクを開く
