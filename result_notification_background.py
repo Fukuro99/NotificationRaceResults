@@ -16,15 +16,6 @@ import format_result_nar_race
 
 console = Console()
 pretty.install()
-"""
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(message)s",
-    datefmt="[%X]",
-    handlers=[RichHandler(rich_tracebacks=True)],
-)
-log = logging.getLogger("rich")
-"""
 #chomedriverのパスを指定
 executable_path="./chromedriver.exe"
 #レース結果通知先のwebsocketサーバーのアドレスを指定
@@ -68,6 +59,7 @@ def main():
                     pass
             #result_raceID_listの重複を取り除く
             result_raceID_list = list(set(result_raceID_list))
+            console.log(result_raceID_list)
             for race_id in result_raceID_list:
                 #通知済みrace_idか判断し、通知済みの場合何もしない
                 if race_id in done_raceID_list:
