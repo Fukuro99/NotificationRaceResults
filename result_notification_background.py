@@ -34,17 +34,16 @@ def main():
         driver = webdriver.Chrome(executable_path=executable_path, options=options)
         while True:
             #data = await ws.receive_text()
-            driver.get('https://www.netkeiba.com/')
+            driver.get('https://race.netkeiba.com/top/')
             html = driver.page_source
             soup = bs4.BeautifulSoup(html, 'html.parser')
             result_state = soup.select_one('.Race_State').text
             print(result_state)
-            for data in soup.find_all(class_ = "ResultFlash01 flash_item"):
+            for data in soup.find_all(class_ = "ResultFlash01"):
                 try:
                     is_nar = False
                     #pan class="Race_State"の値が"確定"の場合のみ処理を行う
-                    race_state = soup.select_one('.Race_State').text
-                    if race_state != "確定":
+                    if not  "確定" in data.text:
                         continue
                     #aタグの中にあるhref属性を取得
                     href = data.find('a').get('href')
@@ -99,11 +98,11 @@ def main():
 
                 except:
                     continue
-            time.sleep(60)
+            time.sleep(1)
     except Exception as e:
         driver = webdriver.Chrome(executable_path=executable_path, options=options)
         console.log("LOG_DEBUG", '{}:{}'.format(type(e),e))
-        time.sleep(60)
+        time.sleep(1)
 
 if __name__ == "__main__":
     main()
